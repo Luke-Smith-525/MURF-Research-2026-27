@@ -22,7 +22,6 @@ def gradx(xval, yval):
     dVdx = 0
     for k in range(0, n):
         gkxy = a[k]*(xval - x0[k])**2 + b[k]*(xval-x0[k])*(yval - y0[k]) + c[k]*(yval - y0[k])**2
-        print(gkxy)
         dVdx += A[k]*math.exp(gkxy)*(2*a[k]*(xval - x0[k])+b[k]*(yval-y0[k]))
     return dVdx
 
@@ -39,14 +38,15 @@ if __name__ == "__main__":
     # set up soln results
     xvals = []
     yvals = []
+    # Initial Conditions
     xnaught = 0
-    ynaught = 0
+    ynaught = 0.5
     xvals.append(xnaught)
     yvals.append(ynaught)
 
     # set up variables
     tend = 10
-    dt = 0.1
+    dt = 1*10**(-4)
     tvals = np.arange(0, tend, dt)
     D = 2  # Diffusivity
     Kbeta = 1  # Boltzman constant
@@ -60,4 +60,15 @@ if __name__ == "__main__":
         xvals.append(xvals[t] + dxcurr)
         yvals.append(yvals[t] + dycurr)
     plt.plot(xvals, yvals)
+    plt.xlabel("X position over time")
+    plt.ylabel("Y position over time")
+    plt.title(f"Position over time, dt = {dt} and IC = ({xnaught}, {ynaught})")
+    minimaX = [-0.558, -0.050, 0.623]
+    minimaY = [1.442, 0.467, 0.028]
+    saddleX = [-0.822, 0.212]
+    saddleY = [0.624, 0.293]
+    plt.plot(xnaught, ynaught, 'bo', label="Starting Point")
+    plt.plot(minimaX, minimaY, 'c+', label="Local Minima")
+    plt.plot(saddleX, saddleY, 'rs', label="Saddle Points")
+    plt.legend()
     plt.show()
