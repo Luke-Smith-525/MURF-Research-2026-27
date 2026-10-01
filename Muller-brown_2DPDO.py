@@ -1,6 +1,7 @@
 # Written by Luke Smith
 # Started 9/29
-# Goal of this program is to simulate several time steps of the Muller Brown function
+# Goal of this program is to simulate several time steps of a particle using Langevin Overdamped Dynamics
+# and the muller-brown potential energy surface
 
 import math
 import matplotlib.pyplot as plt
@@ -19,7 +20,7 @@ y0 = [0, 0.5, 1.5, 1]
 
 
 def gradx(xval, yval):
-    # Calculate the gradiant of V with respect to x, using the Muller-Brown Potential Energy formula
+    # Calculate the gradiant of V with respect to x, using the Muller-Brown Potential Energy surface
     # found on this website: https://hunterheidenreich.com/notes/chemistry/molecular-simulation/classical-methods/muller-brown-1979/
     dVdx = 0
     for k in range(0, n):
@@ -34,7 +35,7 @@ def gradx(xval, yval):
 
 
 def grady(xval, yval):
-    # Calculate the gradiant of V with respect to y, using the Muller-Brown Potential Energy formula
+    # Calculate the gradiant of V with respect to y, using the Muller-Brown Potential Energy surface
     # found on this website: https://hunterheidenreich.com/notes/chemistry/molecular-simulation/classical-methods/muller-brown-1979/
     dVdy = 0
     for k in range(0, n):
@@ -74,8 +75,8 @@ if __name__ == "__main__":
     yvals.append(ynaught)
 
     # set up variables
-    dt = 1*10**(-1)
-    numsteps = 10**6
+    dt = 1*10**(-5)  # time step size
+    numsteps = 10**5
     tend = dt*numsteps
     tvals = np.arange(0, tend, dt)
 
