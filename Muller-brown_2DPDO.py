@@ -23,6 +23,8 @@ def gradx(xval, yval):
     # Calculate the gradiant of V with respect to x, using the Muller-Brown Potential Energy surface
     # found on this website: https://hunterheidenreich.com/notes/chemistry/molecular-simulation/classical-methods/muller-brown-1979/
     dVdx = 0
+    # numpy array, numpy.sum
+    # we <3 vectorization
     for k in range(0, n):
         gkxy = a[k]*(xval - x0[k])**2 + b[k]*(xval-x0[k])*(yval - y0[k]) + c[k]*(yval - y0[k])**2
         try:
@@ -51,7 +53,7 @@ def grady(xval, yval):
 
 if __name__ == "__main__":
     # set up soln results
-    xvals = []
+    xvals = []  # switch to numpy array
     yvals = []
     # Initial Conditions
 
@@ -64,19 +66,23 @@ if __name__ == "__main__":
     # ynaught = 0.4
 
     # big minima:
-    xnaught = -0.6
-    ynaught = 1.4
+    # xnaught = -0.6
+    # ynaught = 1.4
 
     # far away:
     # xnaught = -1.5
     # ynaught = 0.5
 
+    xnaught = -0.5
+    ynaught = 1
+
     xvals.append(xnaught)
     yvals.append(ynaught)
 
     # set up variables
-    dt = 1*10**(-5)  # time step size
-    numsteps = 10**5
+    dt = 1*10**(-5)  # time step size, 1e-4, 1e-3, smaller for bigger
+    # use an array of size numsteps, index for t should match
+    numsteps = 10**6
     tend = dt*numsteps
     tvals = np.arange(0, tend, dt)
 
