@@ -19,17 +19,31 @@ y0 = [0, 0.5, 1.5, 1]
 
 
 def gradx(xval, yval):
+    # Calculate the gradiant of V with respect to x, using the Muller-Brown Potential Energy formula
+    # found on this website: https://hunterheidenreich.com/notes/chemistry/molecular-simulation/classical-methods/muller-brown-1979/
     dVdx = 0
     for k in range(0, n):
         gkxy = a[k]*(xval - x0[k])**2 + b[k]*(xval-x0[k])*(yval - y0[k]) + c[k]*(yval - y0[k])**2
+        try:
+            try_exp = math.exp(gkxy)
+        except OverflowError:
+            print("Solution diverged for given IC and dt. Try a smaller dt or a different IC")
+            raise
         dVdx += A[k]*math.exp(gkxy)*(2*a[k]*(xval - x0[k])+b[k]*(yval-y0[k]))
     return dVdx
 
 
 def grady(xval, yval):
+    # Calculate the gradiant of V with respect to y, using the Muller-Brown Potential Energy formula
+    # found on this website: https://hunterheidenreich.com/notes/chemistry/molecular-simulation/classical-methods/muller-brown-1979/
     dVdy = 0
     for k in range(0, n):
         gkxy = a[k]*(xval - x0[k])**2 + b[k]*(xval-x0[k])*(yval - y0[k]) + c[k]*(yval - y0[k])**2
+        try:
+            try_exp = math.exp(gkxy)
+        except OverflowError:
+            print("Solution diverged for given IC and dt. Try a smaller dt or a different IC")
+            raise
         dVdy += A[k]*math.exp(gkxy)*(b[k]*(xval - x0[k])+2*c[k]*(yval-y0[k]))
     return dVdy
 
@@ -39,21 +53,38 @@ if __name__ == "__main__":
     xvals = []
     yvals = []
     # Initial Conditions
-    xnaught = 0
+
+    # Saddle point:
+    # xnaught = -0.8
+    # ynaught = 0.6
+
+    # Two minima:
+    # xnaught = 0.5
+    # ynaught = 0.4
+
+    # big minima:
+    # xnaught =-0.6
+    # ynaught = 1.4
+
+    # far away:
+    xnaught = -1.5
     ynaught = 0.5
+
     xvals.append(xnaught)
     yvals.append(ynaught)
 
     # set up variables
-    tend = 10
-    dt = 1*10**(-4)
+    dt = 1*10**(-1)
+    numsteps = 10**6
+    tend = dt*numsteps
     tvals = np.arange(0, tend, dt)
+
     D = 2  # Diffusivity
     Kbeta = 1  # Boltzman constant
     T = 1  # temperature
     gamma = 1  # damping
     m = 1  # mass
-    for t in range(0, len(tvals)-1):
+    for t in range(0, numsteps-1):
         # check if this is the right equation for dx, dy
         dxcurr = -gradx(xvals[t], yvals[t])*dt + math.sqrt(2*m*D*Kbeta*T*dt)*random.gauss(mu=0.0, sigma=1.0)
         dycurr = -grady(xvals[t], yvals[t])*dt + math.sqrt(2*m*D*Kbeta*T*dt)*random.gauss(mu=0.0, sigma=1.0)
