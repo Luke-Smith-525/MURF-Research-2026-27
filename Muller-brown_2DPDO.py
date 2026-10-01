@@ -64,12 +64,12 @@ if __name__ == "__main__":
     # ynaught = 0.4
 
     # big minima:
-    # xnaught =-0.6
-    # ynaught = 1.4
+    xnaught = -0.6
+    ynaught = 1.4
 
     # far away:
-    xnaught = -1.5
-    ynaught = 0.5
+    # xnaught = -1.5
+    # ynaught = 0.5
 
     xvals.append(xnaught)
     yvals.append(ynaught)
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     plt.plot(xvals, yvals)
     plt.xlabel("X position over time")
     plt.ylabel("Y position over time")
-    plt.title(f"Position over time, dt = {dt} and IC = ({xnaught}, {ynaught})")
+    plt.title(f"Position over time, dt = {dt} and num steps = {numsteps}")
     minimaX = [-0.558, -0.050, 0.623]
     minimaY = [1.442, 0.467, 0.028]
     saddleX = [-0.822, 0.212]
